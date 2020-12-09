@@ -35,7 +35,7 @@ cname = input("Enter the column name where Name of the Candidate is mentioned : 
 cemail = input("Enter the column name where Email of the Candidate is mentioned : ")
 
 print()
-ds = pd.read_csv(f, usecols=[cemail, cname])
+ds = pd.read_csv(f, usecols=[cemail, cname]) # create dataframe
 print(ds)
 
 print()
@@ -64,7 +64,7 @@ for user in ds.index:
     name_to_print = ds[cname][user]
 
     # Load image in OpenCV
-    image = cv2.imread("ce4.jpg")
+    image = cv2.imread("Certi2.jpg")
 
     # Convert the image to RGB (OpenCV uses BGR)
     cv2_im_rgb = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
@@ -74,12 +74,12 @@ for user in ds.index:
 
     draw = ImageDraw.Draw(pil_im)
     # use a truetype font
-    font = ImageFont.truetype("./fonts/MLSJN.TTF", 29)      # You can change fonts from list given bottom
-    font1 = ImageFont.truetype("./fonts/OLDENGL.TTF", 22)
+    font = ImageFont.truetype("./fonts/MLSJN.TTF", 35)      # You can change fonts from list given bottom
+    font1 = ImageFont.truetype("./fonts/OLDENGL.TTF", 25)
 
     # Draw the text
-    draw.text((int(coordinates[0]), int(coordinates[1])), name_to_print, font=font , fill='black')
-    draw.text((int(coordinates[2]), int(coordinates[3])), date_to_print , font=font1, fill='blue')
+    draw.text((int(coordinates[0]), int(coordinates[1])), name_to_print, font=font, fill='black')
+    draw.text((int(coordinates[2]), int(coordinates[3])), date_to_print, font=font1, fill='blue')
 
     # Get back the image to OpenCV
     cv2_im_processed = cv2.cvtColor(np.array(pil_im), cv2.COLOR_RGB2BGR)
@@ -105,17 +105,17 @@ for user in ds.index:
     msg['To'] = toaddr
 
     # storing the subject
-    msg['Subject'] = "Certificate Test"
+    msg['Subject'] = "Certificate"
 
     # string to store the body of the mail
-    body = "Got the Certificate!!!!!"
+    body = "Thank you for attending! \n\nHere is your certificate."
 
     # attach the body with the msg instance
     msg.attach(MIMEText(body, 'plain'))
 
     # open the file to be sent
     filename = ds[cname][user] + ".png"
-    attachment = open("Output\\" + ds[cname][user] + ".png", "rb")
+    attachment = open("output\\" + filename, "rb")
 
     # instance of MIMEBase and named as p
     p = MIMEBase('application', 'octet-stream')

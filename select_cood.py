@@ -7,7 +7,7 @@ f = open("coords.txt", "w")
 
 
 # mouse callback function
-def draw_circle(event, x, y, flags, param):
+def draw_text(event, x, y, flags, param):
     if event == cv.EVENT_LBUTTONDBLCLK:
         # img[:] = 0
         cv.putText(img, "coordinates (%d,%d)" % (x, y), (60, 60), 2, 1, (0, 255, 0))
@@ -19,12 +19,12 @@ def draw_circle(event, x, y, flags, param):
         # Co-ordinates with blue text will be displayed
 
 
-# Create a black image, a window and bind the function to window
-img = cv.imread("ce4.jpg")
+# Create a blank image, a window and bind the function to window
+img = cv.imread("Certi2.jpg")
 
 # cv.imshow('image',img)
 cv.namedWindow('image')
-cv.setMouseCallback('image', draw_circle)
+cv.setMouseCallback('image', draw_text)
 
 while True:
     cv.imshow('image', img)
