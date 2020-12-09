@@ -1,64 +1,59 @@
-<<<<<<< HEAD:Python Automatic Certificate Generator and Automail (.CSV)/certificate.py
-from PIL import ImageFont, ImageDraw, Image
-import getpass
-import cv2
-import numpy as np
-import pandas as pd
-=======
-
-from PIL import ImageFont, ImageDraw, Image  
-import cv2  
-import numpy as np  
-import os
-import csv
->>>>>>> 16d49eb14dc2871dd0013d5b227145675ecf637a:Automatic Certificate Generator and Automail/certificate.py
+from PIL import ImageFont, ImageDraw, Image         # pip install pillow
+import cv2                                          # pip install opencv-python
+import numpy as np                                  # pip install numpy
+import pandas as pd                                 # pip install pandas
 import smtplib
+import datetime
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 from email.mime.base import MIMEBase
 from email import encoders
 
+# Please read the readme carefully before running any code
+# https://github.com/realhunter7869/Automatic-Certificate-Generator-and-Automail
+
+# Note that before running this file you should first run select_cood.py
+# and get the co-ordinates of where exactly the receiver's name
+# and certificate's name
+
+# Initializing an instance of datetime
+x = datetime.datetime.now()
+
+# Opening the file in which data is present of receivers i.e. mail and name
+# and saving them to a list
+# (format : mail\tname)
+# You get this kind of format when you copy and paste list of emails and names
+# directly from the .csv file to .txt file (Use Excel for csv)
+# Note that splitting of mail and name is not taking place in this section
 f = open(input("Enter file name : "), "r")
-<<<<<<< HEAD:Python Automatic Certificate Generator and Automail (.CSV)/certificate.py
-=======
-names_list = f.read().split("\n")
-# print(names_list)
 
-# for n in range(len(names_list)):
-#     nameEmail = names_list[n].split("\t")
-#     #print(nameEmail)
-#     email = nameEmail[0]
-#     nam = nameEmail[1]
-#     #print(nam, email)
-
->>>>>>> 16d49eb14dc2871dd0013d5b227145675ecf637a:Automatic Certificate Generator and Automail/certificate.py
-
+# Opening the file where the co-ordinates are saved and extracting them
 f1 = open("coords.txt", "r")
 coordinates = f1.read().split("\n")
 
-<<<<<<< HEAD:Python Automatic Certificate Generator and Automail (.CSV)/certificate.py
 cname = input("Enter the column name where Name of the Candidate is mentioned : ")
 cemail = input("Enter the column name where Email of the Candidate is mentioned : ")
 
+print()
 ds = pd.read_csv(f, usecols=[cemail, cname])
 print(ds)
 
+print()
 for user in ds.index:
     print(ds[cemail][user], ds[cname][user])
+
+print()
 
 # Taking the email and password of the sender email
 # Note you have to TURN ON "Less Secure App Access" on the Google account
 # It is in the Security Section of "Manage your Google Account" area
-fromaddr = input("Enter sender's email : ")
-frompass = getpass.getpass("Enter sender's password : ")
+fromaddr = input("Enter sender's email : ") or "musicalnimish@gmail.com"
+frompass = input("Enter sender's password : ") or "ABCD@abcd"
 
 # Using Datetime library to get the current date and displaying it in a
 # systematic way to the user
 date_to_print = input("Enter date (Press Enter if current date is required) : ") or \
                 (x.strftime("%d") + "/" + x.strftime("%m") + "/" + x.strftime("%Y"))
-=======
-fromaddr = "(sender cha emailID)"
->>>>>>> 16d49eb14dc2871dd0013d5b227145675ecf637a:Automatic Certificate Generator and Automail/certificate.py
 
 flag = True
 
@@ -66,12 +61,7 @@ for user in ds.index:
 
     toaddr = ds[cemail][user]
 
-<<<<<<< HEAD:Python Automatic Certificate Generator and Automail (.CSV)/certificate.py
     name_to_print = ds[cname][user]
-=======
-    name_to_print = nam
-    date_to_print = "28/08/2020"   # Change this date as per requirement
->>>>>>> 16d49eb14dc2871dd0013d5b227145675ecf637a:Automatic Certificate Generator and Automail/certificate.py
 
     # Load image in OpenCV
     image = cv2.imread("ce4.jpg")
@@ -97,6 +87,7 @@ for user in ds.index:
     if flag:
         cv2.imshow('Certificate', cv2_im_processed)       # Shows sample image
         flag = False
+
     path = ''
     cv2.imwrite('./output/'+name_to_print+'.png',cv2_im_processed)
     #os.startfile('output.png')
@@ -123,13 +114,8 @@ for user in ds.index:
     msg.attach(MIMEText(body, 'plain'))
 
     # open the file to be sent
-<<<<<<< HEAD:Python Automatic Certificate Generator and Automail (.CSV)/certificate.py
     filename = ds[cname][user] + ".png"
     attachment = open("Output\\" + ds[cname][user] + ".png", "rb")
-=======
-    filename = nam + ".png"
-    attachment = open("C:\\Users\\HP\\Desktop\\Certificate-Automation\\output\\" + nam + ".png", "rb")
->>>>>>> 16d49eb14dc2871dd0013d5b227145675ecf637a:Automatic Certificate Generator and Automail/certificate.py
 
     # instance of MIMEBase and named as p
     p = MIMEBase('application', 'octet-stream')
@@ -152,7 +138,7 @@ for user in ds.index:
     s.starttls()
 
     # Authentication
-    s.login(fromaddr, "password (sender)")
+    s.login(fromaddr, frompass)
 
     # Converts the Multipart msg into a string
     text = msg.as_string()
@@ -163,5 +149,5 @@ for user in ds.index:
     # terminating the session
     s.quit()
 
-
-
+    print()
+    print(f"Email sent to {ds[cname][user]}")
